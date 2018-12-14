@@ -1,5 +1,7 @@
 package edu.rosehulman.colorchooser
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -15,6 +17,10 @@ class InputActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_input)
+
+        colorMessage.message = intent.getStringExtra(ColorMessage.EXTRA_MESSAGE)
+        colorMessage.backgroundColor = intent.getIntExtra(ColorMessage.EXTRA_COLOR, Color.GRAY)
+
         updateUI()
 
         activity_input_button.setOnClickListener {
@@ -47,6 +53,11 @@ class InputActivity : AppCompatActivity() {
             updateUI()
             // TODO: Use an intent to send info back to the
             // activity that called this one for a result.
+            val resultIntent = Intent(this, MainActivity::class.java)
+            resultIntent.putExtra(ColorMessage.EXTRA_MESSAGE, colorMessage.message)
+            resultIntent.putExtra(ColorMessage.EXTRA_COLOR, colorMessage.backgroundColor)
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
         }
         builder.setNegativeButton(getString(android.R.string.cancel), null)
         builder.build().show()

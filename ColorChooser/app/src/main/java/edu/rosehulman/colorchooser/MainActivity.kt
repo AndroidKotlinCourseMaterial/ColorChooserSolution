@@ -1,6 +1,8 @@
 package edu.rosehulman.colorchooser
 
+import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
@@ -19,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         fab.setOnClickListener {
             // TODO: Send an email with the message field as the body
-
+            // val emailIntent = Intent()
         }
 
         updateUI()
@@ -37,6 +39,8 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    private val REQUEST_CODE_INPUT = 1
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_info -> {
@@ -50,10 +54,18 @@ class MainActivity : AppCompatActivity() {
                 val inputIntent = Intent(this, InputActivity::class.java)
                 inputIntent.putExtra(ColorMessage.EXTRA_MESSAGE, colorMessage.message)
                 inputIntent.putExtra(ColorMessage.EXTRA_COLOR, colorMessage.backgroundColor)
-                startActivity(inputIntent)
+                startActivityForResult(inputIntent, REQUEST_CODE_INPUT)
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_CODE_INPUT && resultCode == Activity.RESULT_OK) {
+            colorMessage.message = data?.getStringExtra(ColorMessage.EXTRA_MESSAGE) ?: ""
+            colorMessage.backgroundColor = data?.getIntExtra(ColorMessage.EXTRA_COLOR, Color.GRAY) ?: Color.GRAY
+            updateUI()
         }
     }
 }
