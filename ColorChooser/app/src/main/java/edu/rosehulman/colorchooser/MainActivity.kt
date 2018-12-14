@@ -1,5 +1,6 @@
 package edu.rosehulman.colorchooser
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
@@ -38,13 +39,20 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_info ->
+            R.id.action_info -> {
                 // TODO: Launch a new Info Activity that is a ScrollingActivity.
+                val infoIntent = Intent(this, InfoActivity::class.java)
+                startActivity(infoIntent)
                 true
-            R.id.action_change_color ->
+            }
+            R.id.action_change_color -> {
                 // TODO: Launch the InputActivity to get a result
+                val inputIntent = Intent(this, InputActivity::class.java)
+                inputIntent.putExtra(ColorMessage.EXTRA_MESSAGE, colorMessage.message)
+                inputIntent.putExtra(ColorMessage.EXTRA_COLOR, colorMessage.backgroundColor)
+                startActivity(inputIntent)
                 true
-
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
