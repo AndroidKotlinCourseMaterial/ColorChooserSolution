@@ -51,8 +51,7 @@ class InputActivity : AppCompatActivity() {
             colorMessage.message = activity_input_message.text.toString()
             colorMessage.backgroundColor = selectedColor
             updateUI()
-            // TODO: Use an intent to send info back to the
-            // activity that called this one for a result.
+            // TODO: Use an intent to send info back to the activity that called this one.
             val resultIntent = Intent(this, MainActivity::class.java)
             resultIntent.putExtra(ColorMessage.EXTRA_MESSAGE, colorMessage.message)
             resultIntent.putExtra(ColorMessage.EXTRA_COLOR, colorMessage.backgroundColor)

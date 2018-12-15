@@ -1,8 +1,10 @@
 package edu.rosehulman.colorchooser
 
 import android.app.Activity
+import android.app.SearchManager
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
@@ -21,11 +23,33 @@ class MainActivity : AppCompatActivity() {
 
         fab.setOnClickListener {
             // TODO: Send an email with the message field as the body
-            // val emailIntent = Intent()
+            sendEmail()
+            // search("smith")
         }
 
         updateUI()
     }
+
+    private fun sendEmail() {
+        val intent = Intent(Intent.ACTION_SENDTO)
+        intent.data = Uri.parse("mailto:")
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("xyz@gmail.com"))
+        intent.putExtra(Intent.EXTRA_SUBJECT, "From me")
+        intent.putExtra(Intent.EXTRA_TEXT, colorMessage.message)
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
+        // or startActivity(Intent.createChooser(emailIntent, "Send email to yourself..."));
+    }
+
+    fun search(query: String) {
+        val intent = Intent(Intent.ACTION_SEARCH)
+        intent.putExtra(SearchManager.QUERY, query)
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
+    }
+
 
     private fun updateUI() {
         content_main_message.text = colorMessage.message
@@ -34,7 +58,6 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
