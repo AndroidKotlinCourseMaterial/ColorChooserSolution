@@ -6,7 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
@@ -75,8 +75,9 @@ class MainActivity : AppCompatActivity() {
             R.id.action_change_color -> {
                 // TODO: Launch the InputActivity to get a result
                 val inputIntent = Intent(this, InputActivity::class.java)
-                inputIntent.putExtra(ColorMessage.EXTRA_MESSAGE, colorMessage.message)
-                inputIntent.putExtra(ColorMessage.EXTRA_COLOR, colorMessage.backgroundColor)
+                inputIntent.putExtra(ColorMessage.EXTRA_MESSAGE, colorMessage)
+//                inputIntent.putExtra(ColorMessage.EXTRA_MESSAGE, colorMessage.message)
+//                inputIntent.putExtra(ColorMessage.EXTRA_COLOR, colorMessage.backgroundColor)
                 startActivityForResult(inputIntent, REQUEST_CODE_INPUT)
                 true
             }
@@ -86,8 +87,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_CODE_INPUT && resultCode == Activity.RESULT_OK) {
-            colorMessage.message = data?.getStringExtra(ColorMessage.EXTRA_MESSAGE) ?: ""
-            colorMessage.backgroundColor = data?.getIntExtra(ColorMessage.EXTRA_COLOR, Color.GRAY) ?: Color.GRAY
+            colorMessage = data?.getParcelableExtra(ColorMessage.EXTRA_MESSAGE) ?: ColorMessage()
+//            colorMessage.message = data?.getStringExtra(ColorMessage.EXTRA_MESSAGE) ?: ""
+//            colorMessage.backgroundColor = data?.getIntExtra(ColorMessage.EXTRA_COLOR, Color.GRAY) ?: Color.GRAY
             updateUI()
         }
     }

@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import com.flask.colorpicker.ColorPickerView
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder
@@ -18,9 +18,9 @@ class InputActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_input)
 
-        colorMessage.message = intent.getStringExtra(ColorMessage.EXTRA_MESSAGE)
-        colorMessage.backgroundColor = intent.getIntExtra(ColorMessage.EXTRA_COLOR, Color.GRAY)
-
+//        colorMessage.message = intent.getStringExtra(ColorMessage.EXTRA_MESSAGE)
+//        colorMessage.backgroundColor = intent.getIntExtra(ColorMessage.EXTRA_COLOR, Color.GRAY)
+        colorMessage = intent.getParcelableExtra<ColorMessage>(ColorMessage.EXTRA_MESSAGE)
         updateUI()
 
         activity_input_button.setOnClickListener {
@@ -40,7 +40,7 @@ class InputActivity : AppCompatActivity() {
         builder.initialColor(colorMessage.backgroundColor)
         builder.wheelType(ColorPickerView.WHEEL_TYPE.CIRCLE)
         builder.density(6)
-        builder.setOnColorSelectedListener { selectedColor ->
+        builder.setOnColorSelectedListener { selectedColor: Int ->
             Toast.makeText(
                 this@InputActivity,
                 "onColorSelected: 0x" + Integer.toHexString(selectedColor),
@@ -53,8 +53,9 @@ class InputActivity : AppCompatActivity() {
             updateUI()
             // TODO: Use an intent to send info back to the activity that called this one.
             val resultIntent = Intent(this, MainActivity::class.java)
-            resultIntent.putExtra(ColorMessage.EXTRA_MESSAGE, colorMessage.message)
-            resultIntent.putExtra(ColorMessage.EXTRA_COLOR, colorMessage.backgroundColor)
+            resultIntent.putExtra(ColorMessage.EXTRA_MESSAGE, colorMessage)
+            //resultIntent.putExtra(ColorMessage.EXTRA_MESSAGE, colorMessage.message)
+            //resultIntent.putExtra(ColorMessage.EXTRA_COLOR, colorMessage.backgroundColor)
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
         }
